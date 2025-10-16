@@ -4,10 +4,10 @@ import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 
 const AddToPlaylist = ({ movie, onClick }) => (
   <IconButton
-    aria-label={`add ${movie?.title ?? "movie"} to must-watch`}
+    aria-label={`add ${movie.title} to must-watch`}
     onClick={(e) => {
       e.preventDefault();
-      onClick?.(movie);
+      onClick?.(movie);   // no-op for Exercise 2
     }}
   >
     <PlaylistAddIcon />

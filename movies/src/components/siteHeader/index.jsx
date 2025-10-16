@@ -22,10 +22,11 @@ const SiteHeader = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const menuOptions = [
-    { label: "Home", path: "/" },
-    { label: "Upcoming", path: "/movies/upcoming" },    
-    { label: "Favorites", path: "/movies/favorites" },
-  ];
+  { label: "Home", path: "/" },
+  { label: "Upcoming", path: "/movies/upcoming" },
+  { label: "Favorites", path: "/movies/favorites" },
+  { label: "Must Watch", path: "/movies/mustwatch" }, 
+];
 
   const handleMenu = (event) => setAnchorEl(event.currentTarget);
 
