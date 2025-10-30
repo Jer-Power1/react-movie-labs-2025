@@ -122,3 +122,17 @@ export const getTrendingThisWeek=() => {
   })
   .catch((error) => {throw error; });
 };
+
+export const getCredits = ({ queryKey }) => {
+  const [, { id }] = queryKey;
+  return fetch(
+     `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${import.meta.env.VITE_TMDB_KEY}`
+  )
+    .then(async (res) => {
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.status_message || "Failed to fetch credits");
+      }
+      return res.json();
+    });
+};

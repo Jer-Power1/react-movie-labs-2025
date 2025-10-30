@@ -9,6 +9,8 @@ import Fab from "@mui/material/Fab";
 import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/Drawer";
 import MovieReviews from "../movieReviews";
+import { useQuery } from "@tanstack/react-query";
+import { getCredits } from "../../api/tmdb-api";
 
 const root = {
   display: "flex",
@@ -23,6 +25,16 @@ const chip = { margin: 0.5 };
 const MovieDetails = ({ movie }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+
+const {data: credits, isPending: creditsLoading, isError: creditsError, error} = useQuery({
+  queryKey: ["credits", {id: movie.id}],
+  queryFn: getCredits,
+  enabled: !!movie?.id
+});
+
+const directors = credits?.crew
+?.filter((p) => p.job === "Director")
+.map((p) => p.name) || [];
   return (
     <>
       <Typography variant="h5" component="h3">
@@ -32,6 +44,26 @@ const MovieDetails = ({ movie }) => {
       <Typography variant="h6" component="p">
         {movie.overview}
       </Typography>
+
+      {/* Director */}
+      <Paper component="ul" sx={{...root }}>
+        <li>
+          <Chip 
+          label={directors.length > 1 ? "Directors" : "Director"}
+          sx={{ ...chip }}
+          color="primary"
+          />
+        </li>
+      {creditsLoading ? (
+        <li><Chip label="Loading..." sx={{ ...chip }} /></li>
+        ) : creditsError || directors.length === 0 ? (
+         <li><Chip label="Unknown" sx={{ ...chip }} /></li>
+        ) : (
+        directors.map((name) => (
+          <li key={name}><Chip label={name} sx={{ ...chip }} /></li>
+        ))
+      )}
+      </Paper>
 
       {/* Genres */}
       <Paper component="ul" sx={{ ...root }}>
