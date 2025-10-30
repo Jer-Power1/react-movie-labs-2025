@@ -12,7 +12,8 @@ import MoviesContextProvider from "./contexts/moviesContext";
 import AddMovieReviewPage from './pages/addMovieReviewPage'
 import UpcomingMoviesPage from "./pages/upcomingMoviesPage.jsx";
 import MustWatchMoviesPage from "./pages/mustWatchMoviesPage.jsx";
-
+import TrendingThisWeekPage from "./pages/trendingThisWeekPage.jsx";
+import {ThemeProvider, createTheme, CssBaseline} from "@mui/material";
 
 
 const queryClient = new QueryClient({
@@ -25,9 +26,15 @@ const queryClient = new QueryClient({
   },
 });
 
+const theme = createTheme({
+palette: {mode: "dark", primary: {main: "#1db954" }}, secondary: {main: "#9c27b0"}
+});
+
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline/>
       <BrowserRouter>
         <SiteHeader />
         <MoviesContextProvider>
@@ -40,10 +47,12 @@ const App = () => {
             <Route path="/reviews/form" element={ <AddMovieReviewPage /> } />
             <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
             <Route path="/movies/mustwatch" element={<MustWatchMoviesPage />} />
+            <Route path="/movies/trending/this-week" element={<TrendingThisWeekPage />} />
           </Routes>
         </MoviesContextProvider>
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} />
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };
