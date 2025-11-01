@@ -15,7 +15,7 @@ import { getCredits, getRecommendations } from "../../api/tmdb-api";
 import MovieList from "../movieList";
 import AddToFavoritesIcon from "../cardIcons/addToFavorites";
 import Grid from "@mui/material/Grid";
-
+import Button from "@mui/material/Button";
 
 
 const root = {
@@ -68,6 +68,16 @@ const { data: recsData, isPending: recsLoading, isError: recsError } = useQuery(
       <Typography variant="h6" component="p">
         {movie.overview}
       </Typography>
+
+      {/* View the cast */}
+      <Button
+          component={Link}
+          to={`/movies/${movie.id}/cast`}
+          variant="contained"
+          sx={{ mt: 2 }}
+        >
+          View Full Cast
+      </Button>
 
       {/* Director */}
       <Paper component="ul" sx={{...root }}>
