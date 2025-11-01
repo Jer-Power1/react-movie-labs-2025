@@ -165,3 +165,16 @@ export const getLowestRatedMovies = () => {
     });
 };
 
+export const getRecommendations = ({ queryKey }) => {
+  const [, { id }] = queryKey;
+   return fetch(
+    `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
+   )
+   .then(async (res) => {
+    if (!res.ok) {
+      const e = await res.json().catch(() => ({}));
+      throw new Error(e.status_message || "Failed to fetch recommendations");
+    }
+    return res.json();
+    });
+};

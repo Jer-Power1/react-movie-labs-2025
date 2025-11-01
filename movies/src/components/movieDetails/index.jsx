@@ -10,7 +10,12 @@ import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/Drawer";
 import MovieReviews from "../movieReviews";
 import { useQuery } from "@tanstack/react-query";
-import { getCredits } from "../../api/tmdb-api";
+import { getCredits, getRecommendations } from "../../api/tmdb-api";
+import MovieList from "../movieList";
+import AddToFavoritesIcon from "../cardIcons/addToFavorites";
+import Grid from "@mui/material/Grid";
+
+
 
 const root = {
   display: "flex",
@@ -35,6 +40,17 @@ const {data: credits, isPending: creditsLoading, isError: creditsError, error} =
 const directors = credits?.crew
 ?.filter((p) => p.job === "Director")
 .map((p) => p.name) || [];
+
+const { data: recsData, isPending: recsLoading, isError: recsError } = useQuery({
+   queryKey: ["recommendations", { id: movie.id }],
+   queryFn: getRecommendations,
+   enabled: !!movie?.id,
+   });
+
+   const recs = recsData?.results ?? [];
+
+
+
   return (
     <>
       <Typography variant="h5" component="h3">
@@ -110,6 +126,26 @@ const directors = credits?.crew
           <Chip label={`Released: ${movie.release_date}`} />
         </li>
       </Paper>
+
+      <Typography variant="h5" component="h3" sx={{ mt: 3, mb: 1.5 }}>
+        Recommended
+      </Typography>
+
+      {recsLoading ? (
+        <Typography variant="body1">Loading…</Typography>
+      ) : recsError ? (
+        <Typography variant="body1" color="error">Couldn’t load recommendations.</Typography>
+      ) : recs.length === 0 ? (
+        <Typography variant="body1">No recommendations found.</Typography>
+      ) : (
+        // 👇 Wrap the items in a Grid container
+        <Grid container spacing={2}>
+          <MovieList
+            movies={recs}
+            action={(m) => <AddToFavoritesIcon movie={m} />}
+          />
+        </Grid>
+      )}
 
       <Fab
         color="secondary"
