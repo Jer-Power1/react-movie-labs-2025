@@ -25,6 +25,7 @@ const SiteHeader = () => {
   { label: "Home", path: "/" },
   { label: "Upcoming", path: "/movies/upcoming" },
   { label: "Trending This Week", path: "/movies/trending/this-week"},
+  { label: "Top Rated", path: "/movies/top-rated" },
   { label: "Favorites", path: "/movies/favorites" },
   { label: "Must Watch", path: "/movies/mustwatch" }, 
 ];
@@ -33,7 +34,7 @@ const SiteHeader = () => {
 
   return (
     <>
-      <AppBar position="fixed" color="secondary">
+      <AppBar position="fixed" color="primary">
         <Toolbar>
           <Typography variant="h4" sx={{ flexGrow: 1 }}>
             TMDB Client
