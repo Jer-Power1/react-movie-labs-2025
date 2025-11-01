@@ -15,6 +15,7 @@ import MustWatchMoviesPage from "./pages/mustWatchMoviesPage.jsx";
 import TrendingThisWeekPage from "./pages/trendingThisWeekPage.jsx";
 import {ThemeProvider, createTheme, CssBaseline} from "@mui/material";
 import TopRatedMoviesPage from "./pages/topRatedMoviesPage.jsx";
+import LowestRatedMoviesPage from "./pages/lowestRatedMoviesPage.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -49,6 +50,7 @@ const App = () => {
             <Route path="/movies/mustwatch" element={<MustWatchMoviesPage />} />
             <Route path="/movies/trending/this-week" element={<TrendingThisWeekPage />} />
             <Route path="/movies/top-rated" element={<TopRatedMoviesPage />} />
+            <Route path="/movies/lowest-rated" element={<LowestRatedMoviesPage />} />
           </Routes>
         </MoviesContextProvider>
       </BrowserRouter>

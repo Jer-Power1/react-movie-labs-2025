@@ -149,3 +149,19 @@ export const getTopRatedMovies = () => {
       return res.json();
     });
 };
+
+export const getLowestRatedMovies = () => {
+  return fetch(
+    `https://api.themoviedb.org/3/discover/movie?api_key=${
+      import.meta.env.VITE_TMDB_KEY
+    }&language=en-US&include_adult=false&include_video=false&sort_by=vote_average.asc&vote_count.gte=200&page=1`
+  )
+    .then(async (res) => {
+      if (!res.ok) {
+        const e = await res.json().catch(() => ({}));
+        throw new Error(e.status_message || "Something went wrong");
+      }
+      return res.json();
+    });
+};
+
