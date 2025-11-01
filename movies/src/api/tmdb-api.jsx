@@ -178,3 +178,29 @@ export const getRecommendations = ({ queryKey }) => {
     return res.json();
     });
 };
+
+export const getPerson = ({ queryKey }) => {
+  const [, { id }] = queryKey;
+  return fetch(
+    `https://api.themoviedb.org/3/person/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US`
+  ).then(async (res) => {
+    if (!res.ok) {
+      const e = await res.json().catch(() => ({}));
+      throw new Error(e.status_message || "Failed to fetch person");
+    }
+    return res.json();
+  });
+};
+
+export const getPersonMovieCredits = ({ queryKey }) => {
+  const [, { id }] = queryKey;
+  return fetch(
+    `https://api.themoviedb.org/3/person/${id}/movie_credits?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US`
+  ).then(async (res) => {
+    if (!res.ok) {
+      const e = await res.json().catch(() => ({}));
+      throw new Error(e.status_message || "Failed to fetch person credits");
+    }
+    return res.json();
+  });
+};

@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/Drawer";
 import MovieReviews from "../movieReviews";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router";
 import { getCredits, getRecommendations } from "../../api/tmdb-api";
 import MovieList from "../movieList";
 import AddToFavoritesIcon from "../cardIcons/addToFavorites";
@@ -37,9 +38,16 @@ const {data: credits, isPending: creditsLoading, isError: creditsError, error} =
   enabled: !!movie?.id
 });
 
-const directors = credits?.crew
+/*const directors = credits?.crew
 ?.filter((p) => p.job === "Director")
 .map((p) => p.name) || [];
+*/
+
+const directors =
+credits?.crew?.filter((p) => p.job === "Director").map((p) => ({
+id: p.id,
+name: p.name,
+})) || [];
 
 const { data: recsData, isPending: recsLoading, isError: recsError } = useQuery({
    queryKey: ["recommendations", { id: movie.id }],
@@ -75,8 +83,16 @@ const { data: recsData, isPending: recsLoading, isError: recsError } = useQuery(
         ) : creditsError || directors.length === 0 ? (
          <li><Chip label="Unknown" sx={{ ...chip }} /></li>
         ) : (
-        directors.map((name) => (
-          <li key={name}><Chip label={name} sx={{ ...chip }} /></li>
+        directors.map((d) => (
+          <li key={d.id}>
+            <Chip
+              component={Link}
+              to={`/person/${d.id}`}
+              clickable
+              label={d.name}
+              sx={{ ...chip }}
+              />
+            </li>
         ))
       )}
       </Paper>
