@@ -24,8 +24,14 @@ const formControl =
     backgroundColor: "rgb(255, 255, 255)"
   };
 
-export default function FilterMoviesCard(props) {
+  const SORT_OPTIONS = [
+  { value: "popularity", label: "Popularity" },
+  { value: "title", label: "Title" },
+  { value: "release_date", label: "Release date" },
+  { value: "vote_average", label: "Rating" },
+];
 
+export default function FilterMoviesCard(props) {
     const { data, error, isPending, isError } = useQuery({
     queryKey: ['genres'],
     queryFn: getGenres,
@@ -56,19 +62,34 @@ export default function FilterMoviesCard(props) {
     handleChange(e, "genre", e.target.value);
   };
 
+  const handleSortKeyChange = (e) => {
+    handleChange(e, "sortKey", e.target.value);
+  }
+
+   const handleSortDirChange = (e) => {
+    handleChange(e, "sortDir", e.target.value);
+  }
+
+
   return (
     <Card 
       sx={{
-        backgroundColor: "rgb(204, 204, 0)"
+        backgroundColor: "#1db954",
+        color: "black",
       }} 
       variant="outlined">
       <CardContent>
-        <Typography variant="h5" component="h1">
+        <Typography variant="h5" component="h1" sx= {{color: "black"}}>
           <SearchIcon fontSize="large" />
           Filter the movies.
         </Typography>
+
         <TextField
-            sx={{...formControl}}
+            sx={{...formControl,
+              "& .MuiOutlinedInput-root": { bgcolor: "white" },
+            "& .MuiInputBase-input": { color: "black" },
+            "& .MuiInputLabel-root": { color: "black" },
+            }}
             id="filled-search"
             label="Search field"
             type="search"
@@ -77,7 +98,12 @@ export default function FilterMoviesCard(props) {
             onChange={handleTextChange}
         />
 
-        <FormControl sx={{...formControl}}>
+        <FormControl sx={{...formControl,
+          "& .MuiOutlinedInput-root": { bgcolor: "white" },
+            "& .MuiInputLabel-root": { color: "black" },
+            "& .MuiSelect-select": { color: "black" },
+            "& .MuiSvgIcon-root": { color: "black" },
+        }}>
           <InputLabel id="genre-label">Genre</InputLabel>
             <Select
                 labelId="genre-label"
@@ -96,6 +122,46 @@ export default function FilterMoviesCard(props) {
             })}
           </Select>
         </FormControl>
+
+        <FormControl sx={{ ...formControl,
+          "& .MuiOutlinedInput-root": { bgcolor: "white" },
+            "& .MuiInputLabel-root": { color: "black" },
+            "& .MuiSelect-select": { color: "black" },
+            "& .MuiSvgIcon-root": { color: "black" },
+         }}>
+          <InputLabel id="sortby-label">Sort by</InputLabel>
+          <Select
+            labelId="sortby-label"
+            id="sortby-select"
+            value={props.sortKey}
+            onChange={handleSortKeyChange}
+          >
+            {SORT_OPTIONS.map((opt) => (
+              <MenuItem key={opt.value} value={opt.value}>
+                {opt.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <FormControl sx={{ ...formControl,
+          "& .MuiOutlinedInput-root": { bgcolor: "white" },
+            "& .MuiInputLabel-root": { color: "black" },
+            "& .MuiSelect-select": { color: "black" },
+            "& .MuiSvgIcon-root": { color: "black" },
+         }}>
+          <InputLabel id="dir-label">Direction</InputLabel>
+          <Select
+            labelId="dir-label"
+            id="dir-select"
+            value={props.sortDir}
+            onChange={handleSortDirChange}
+          >
+            <MenuItem value="desc">Descending</MenuItem>
+            <MenuItem value="asc">Ascending</MenuItem>
+          </Select>
+        </FormControl>
+
       </CardContent>
       <CardMedia
         sx={{ height: 300 }}
@@ -103,7 +169,7 @@ export default function FilterMoviesCard(props) {
         title="Filter"
       />
       <CardContent>
-        <Typography variant="h5" component="h1">
+        <Typography variant="h5" component="h1" sx={{ color: "black" }}>
           <SearchIcon fontSize="large" />
           Filter the movies.
           <br />
